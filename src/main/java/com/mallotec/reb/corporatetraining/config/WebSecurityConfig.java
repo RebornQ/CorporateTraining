@@ -1,57 +1,38 @@
 package com.mallotec.reb.corporatetraining.config;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.context.annotation.Bean;
+import com.mallotec.reb.corporatetraining.config.interceptor.SecurityInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 登录配置
  *
  */
 @Configuration
-public class WebSecurityConfig extends WebMvcConfigurerAdapter {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
-    /**
-     * 登录session key
-     */
-    public final static String SESSION_KEY = "user";
-
-    @Bean
-    public SecurityInterceptor getSecurityInterceptor() {
-        return new SecurityInterceptor();
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
+        InterceptorRegistration addInterceptor = registry.addInterceptor(new SecurityInterceptor());
 
         // 排除配置
         addInterceptor.excludePathPatterns("/error");
-        addInterceptor.excludePathPatterns("/login**");
+        addInterceptor.excludePathPatterns("/admin/login**");
+        addInterceptor.excludePathPatterns("/api/user/**");
+        addInterceptor.excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 
         // 拦截配置
         addInterceptor.addPathPatterns("/**");
-    }
-
-    private class SecurityInterceptor extends HandlerInterceptorAdapter {
-
-        @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-                throws Exception {
-            HttpSession session = request.getSession();
-            if (session.getAttribute(SESSION_KEY) != null)
-                return true;
-
-            // 跳转登录
-//            String url = "/login";
-            response.sendRedirect(request.getContextPath()+"/static/admin/login.html");
-            return false;
-        }
     }
 }

@@ -2,40 +2,57 @@ package com.mallotec.reb.corporatetraining.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mallotec.reb.corporatetraining.pojo.Result;
+import com.mallotec.reb.corporatetraining.pojo.User;
+import com.mallotec.reb.corporatetraining.service.UserService;
 import com.mallotec.reb.corporatetraining.util.ResultUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mallotec.reb.corporatetraining.util.StringUtil;
+import io.swagger.annotations.Api;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
-import pojo.User;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/user")
+@EnableAutoConfiguration
+@Api
 public class UserController {
 
-    @Autowired
-    private dao.UserMapper userMapper;
+    private UserService userService;
 
-    @PostMapping
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping(value = "/")
     @ResponseBody
-    public Result addUser(@RequestBody pojo.User user) {
-        Result result = new Result();
-        if (userMapper.insertUser(user) > 0) result = ResultUtil.success("注册成功！");
+    public Object getUser(@RequestParam String username) {
+        Result result = null;
+        User user = userService.findUserByName(username);
+        if (user != null) {
+            result = ResultUtil.success(user);
+        }
+        return result;
+    }
+
+    @PostMapping(value = "/")
+    @ResponseBody
+    public Object addUser(@RequestBody User user) {
+        Result result;
+        user.setPassword(StringUtil.MD5(user.getPassword()));
+        if (userService.addUser(user) > 0) result = ResultUtil.success("注册成功！");
         else result = ResultUtil.error500("注册失败");
         return result;
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Result login(@RequestParam String username, @RequestParam String password, HttpSession httpSession) {
-        Result result = new Result();
+    public Object login(@RequestParam String username, @RequestParam String password, HttpSession httpSession) {
+        Result result;
         JSONObject jsonObject = new JSONObject();
-        pojo.User user = User.QueryBuild()
-                .fetchUsername()
-                .username(username)
-                .build();
+        User user = userService.findUserByName(username);
         if (user != null) {
-            if (user.getPassword().equals(password)) {
+            if (user.getPassword().equals(StringUtil.MD5(password))) {
                 jsonObject.put("username", username);
                 result = ResultUtil.customizedSuccess("登陆成功", jsonObject);
                 httpSession.setAttribute("username", username);

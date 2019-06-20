@@ -1,13 +1,19 @@
-package dao;
+package com.mallotec.reb.corporatetraining.dao;
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
-import pojo.User;
-import dao.base.UserBaseMapper;
-/**
-*  @author Reborn
-*/
-public interface UserMapper extends UserBaseMapper{
+import com.mallotec.reb.corporatetraining.pojo.User;
 
+public interface UserMapper {
+    int deleteByPrimaryKey(Integer id);
 
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    User selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
+
+    User selectByName(String username);
 }
