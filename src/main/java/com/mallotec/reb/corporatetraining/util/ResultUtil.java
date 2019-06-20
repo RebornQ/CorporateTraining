@@ -31,23 +31,32 @@ public class ResultUtil {
     }
 
     /***
-     * 自定义提示信息带数据返回请求成功
-     *
-     * @param data 要返回的数据
-     * @param msg 提示信息
-     * @return 请求结果
-     */
-    public static Result customizedSuccess(Object data, String msg) {
-        return result(200, msg, data);
-    }
-
-    /***
      * 无数据返回请求成功
      *
      * @return 请求结果
      */
     public static Result success() {
         return success(null);
+    }
+
+    /***
+     * 自定义提示信息带数据返回请求成功
+     *
+     * @param data 要返回的数据
+     * @param msg 提示信息
+     * @return 请求结果
+     */
+    public static Result customizedSuccess(String msg, Object data) {
+        return result(200, msg, data);
+    }
+    /***
+     * 自定义提示信息无数据返回请求成功
+     *
+     * @param msg 提示信息
+     * @return 请求结果
+     */
+    public static Result customizedSuccess(String msg) {
+        return result(200, msg, null);
     }
 
     /***
