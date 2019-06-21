@@ -11,7 +11,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
     /**
      * 登录session key
      */
-    public final static String SESSION_KEY = "user";
+    public final static String SESSION_KEY = "username";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
