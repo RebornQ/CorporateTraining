@@ -29,10 +29,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         // 排除配置
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/admin/login**");
-        addInterceptor.excludePathPatterns("/api/user/**");
+        addInterceptor.excludePathPatterns("/api/user/login**");
         addInterceptor.excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 
         // 拦截配置
         addInterceptor.addPathPatterns("/**");
+//        addInterceptor.addPathPatterns("/api/user");
     }
 }
