@@ -13,20 +13,20 @@
             border: 1px solid #666;
         }
     </style>
-    <title>Login</title>
+    <title>Upload</title>
 </head>
 <body>
 <div id="app">
-    <div class="loginBox">
-        <h3 style="text-align:center;">电商系统后台登录</h3>
-
-        <el-input v-model="form.username" placeholder="请输入用户名" style="margin-top:20px;"></el-input>
-
-        <el-input v-model="form.password" type="password" placeholder="请输入密码" style="margin-top:20px;"></el-input>
-
-        <el-button @click="login" style="width:100%;margin-top:50px;margin-bottom:50px;">登录</el-button>
-
-    </div>
+    <el-upload
+            class="upload-demo"
+            action="/api/file/upload"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            list-type="picture">
+        <el-button size="small" type="primary">点击上传</el-button>
+        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
 </div>
 </body>
 <!-- import Vue before Element -->
@@ -67,21 +67,19 @@
                 form: {
                     username: '',
                     password: ''
-                }
+                },
+                fileName: '',
+                fileList: []
             }
         },
         methods: {
             login: function () {
-                axios.post('/api/user/login', queryParams(this.form), {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                }).then(function (res) {
-                    console.log(res);
-                    if (res.data.code === 200) {
-                        location.href = "/admin/upload.html"
-                    }
-                })
+            },
+            handleRemove: function(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview: function (file) {
+                console.log(file);
             }
         }
     })

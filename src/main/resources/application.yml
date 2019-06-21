@@ -82,3 +82,8 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mapper/**/*Mapper.xml
   type-aliases-package: com.mallotec.reb.corporatetraining.pojo
+
+
+file:
+  upload-path: upload/
+  upload-temp-path: upload/temp/
