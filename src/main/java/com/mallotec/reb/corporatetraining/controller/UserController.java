@@ -24,18 +24,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping
     @ResponseBody
-    public Object getUser(@RequestParam String username) {
+    public Object getUser(@RequestParam(value = "username",required = true) String username) {
         Result result = null;
         User user = userService.findUserByName(username);
         if (user != null) {
+            user.setPassword("***");
             result = ResultUtil.success(user);
+        } else {
+            result = ResultUtil.error500("用户不存在");
         }
         return result;
     }
 
-    @PostMapping(value = "/")
+    @PostMapping
     @ResponseBody
     public Object addUser(@RequestBody User user) {
         Result result;
