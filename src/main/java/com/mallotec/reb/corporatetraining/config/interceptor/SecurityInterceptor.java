@@ -16,10 +16,14 @@ public class SecurityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        /*String requestUrl = request.getRequestURL().toString();
-        if (requestUrl.contains("swagger")) {
+        String requestUrl = request.getRequestURL().toString();
+        String method = request.getMethod();
+        System.out.println(requestUrl);
+        System.out.println(method);
+        if (requestUrl.contains("/api/user") && method.equalsIgnoreCase("POST")) {
+            System.out.println("已放过" + method + "的" + requestUrl);
             return true;
-        }*/
+        }
         HttpSession session = request.getSession();
         if (session.getAttribute(SESSION_KEY) != null)
             return true;
