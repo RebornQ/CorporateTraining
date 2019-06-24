@@ -79,7 +79,13 @@
                 }).then(function (res) {
                     console.log(res);
                     if (res.data.code === 200) {
-                        location.href = "/admin/upload.html"
+                        if (res.data.data.role === 0) {
+                            location.href = "/admin/upload.html";
+                        } else if (res.data.data.role === 1) {
+                            location.href = "/index.html";
+                        }
+                    } else if (res.data.code === 500) {
+                        alert(res.data.message)
                     }
                 })
             }
