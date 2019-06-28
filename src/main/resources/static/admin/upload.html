@@ -17,10 +17,16 @@
 </head>
 <body>
 <p>超级用户</p>
+
 <div id="app">
+
+    <el-link type="primary" @click="logout">退出登陆</el-link>
+
+    <br><br>
+
     <el-upload
             class="upload-demo"
-            action="/api/file/upload"
+            action="/corporatetraining/api/file/upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
@@ -37,6 +43,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
+    var appName = '/corporatetraining';
 
     function queryParams(data, isPrefix) {
         isPrefix = isPrefix ? isPrefix : false;
@@ -81,6 +88,16 @@
             },
             handlePreview: function (file) {
                 console.log(file);
+            },
+            logout: function () {
+                axios.post(appName + '/api/user/logout', null, null)
+                    .then(function (res) {
+                        console.log(res);
+                        alert(res.data.message)
+                        if (res.data.code === 200) {
+                            location.href = appName + "/login.html";
+                        }
+                    })
             }
         }
     })

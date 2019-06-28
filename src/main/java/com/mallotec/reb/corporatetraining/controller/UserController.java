@@ -70,4 +70,17 @@ public class UserController {
         System.out.println(JSON.toJSON(result));
         return result;
     }
+
+    @PostMapping(value = "/logout", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object logout(HttpSession httpSession) {
+        Result result;
+        httpSession.setAttribute("username", null);
+        if (httpSession.getAttribute("username") != null) {
+            result = ResultUtil.error500("退出登陆失败");
+        } else {
+            result = ResultUtil.customizedSuccess("退出成功");
+        }
+        return result;
+    }
 }

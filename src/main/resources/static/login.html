@@ -36,6 +36,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
+    var appName = '/corporatetraining';
 
     function queryParams(data, isPrefix) {
         isPrefix = isPrefix ? isPrefix : false;
@@ -72,7 +73,7 @@
         },
         methods: {
             login: function () {
-                axios.post('/api/user/login', queryParams(this.form), {
+                axios.post(appName + '/api/user/login', queryParams(this.form), {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     }
@@ -80,9 +81,9 @@
                     console.log(res);
                     if (res.data.code === 200) {
                         if (res.data.data.role === 0) {
-                            location.href = "/admin/upload.html";
+                            location.href = appName + "/admin/upload.html";
                         } else if (res.data.data.role === 1) {
-                            location.href = "/index.html";
+                            location.href = appName + "/index.html";
                         }
                     } else if (res.data.code === 500) {
                         alert(res.data.message)
