@@ -11,6 +11,10 @@
     <groupId>com.mallotec.reb</groupId>
     <artifactId>corporatetraining</artifactId>
     <version>0.0.1</version>
+    <!--默认为jar方式-->
+    <!--<packaging>jar</packaging>-->
+    <!--改为war方式-->
+    <packaging>war</packaging>
     <name>CorporateTraining</name>
     <description>Corporate training homework for Spring Boot</description>
 
@@ -35,6 +39,10 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -50,6 +58,14 @@
                     <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- Servlet Api -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>7.0.14</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- mybatis依赖 -->
@@ -80,11 +96,11 @@
         </dependency>
 
         <!-- alibaba的druid数据库连接池 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+<!--            <version>${druid.version}</version>-->
+<!--        </dependency>-->
         <!-- alibaba的json解析框架 -->
         <dependency>
             <groupId>com.alibaba</groupId>

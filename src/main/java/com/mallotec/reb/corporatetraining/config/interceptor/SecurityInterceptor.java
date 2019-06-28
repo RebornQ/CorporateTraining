@@ -29,7 +29,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
             return true;
 
         // 跳转登录
-        response.sendRedirect(request.getContextPath() + "/admin/login.html");
+        response.sendRedirect(request.getContextPath() + "/login.html");
         return false;
     }
 }

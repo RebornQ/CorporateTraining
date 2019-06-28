@@ -1,5 +1,6 @@
 package com.mallotec.reb.corporatetraining.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mallotec.reb.corporatetraining.pojo.Result;
 import com.mallotec.reb.corporatetraining.pojo.User;
@@ -57,6 +58,7 @@ public class UserController {
         if (user != null) {
             if (user.getPassword().equals(StringUtil.MD5(password))) {
                 jsonObject.put("username", username);
+                jsonObject.put("role", user.getRole());
                 result = ResultUtil.customizedSuccess("登陆成功", jsonObject);
                 httpSession.setAttribute("username", username);
             } else {
@@ -64,6 +66,20 @@ public class UserController {
             }
         } else {
             result = ResultUtil.error500("用户不存在");
+        }
+        System.out.println(JSON.toJSON(result));
+        return result;
+    }
+
+    @PostMapping(value = "/logout", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object logout(HttpSession httpSession) {
+        Result result;
+        httpSession.setAttribute("username", null);
+        if (httpSession.getAttribute("username") != null) {
+            result = ResultUtil.error500("退出登陆失败");
+        } else {
+            result = ResultUtil.customizedSuccess("退出成功");
         }
         return result;
     }
