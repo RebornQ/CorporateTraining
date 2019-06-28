@@ -23,7 +23,7 @@ spring:
     username: root
     password: 1234
     # 使用druid数据源
-    type: com.alibaba.druid.pool.DruidDataSource
+#    type: com.alibaba.druid.pool.DruidDataSource
     druid:
       # http://localhost:8080/druid
       # 下面为连接池的补充设置，应用到上面所有数据源中
